@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require 'pathname'
+require "optparse"
+require_relative "../lib/omgcnb.rb"
+
+options = {}
+parser = OptionParser.new do |opts|
+  opts.banner = <<~EOM
+    Usage: omgcnb [argument] [options]
+
+  EOM
+
+  opts.on("--help", "Help - displays this message") do |v|
+    puts opts
+    exit
+  end
+
+  # opts.on("--record <dir>", "When enabled, records the steps used to search for a syntax error to the given directory") do |v|
+  #   options[:record_dir] = v
+  # end
+end
+parser.parse!
+
+command = ARGV[0]
+
+case arguments
+when deps
+
+when nil
+  puts parser.help
+end
+

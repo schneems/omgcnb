@@ -35,7 +35,7 @@ module Omgcnb
       node = unreleased_h2&.next_sibling
       while node
         node = node.next_sibling
-        case node.name
+        case node&.name
         when "h2"
           return nil
         when "ul"

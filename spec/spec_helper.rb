@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'fileutils'
+require 'tmpdir'
 require "omgcnb"
 
 RSpec.configure do |config|
@@ -14,6 +16,20 @@ RSpec.configure do |config|
   end
 end
 
+def mock_toml(name: )
+  <<~EOM
+  [buildpack]
+  id = "#{name}"
+  EOM
+end
+
+def mock_changelog(needs_release: false)
+  changelog = String.new()
+  changelog << "## unreleased\n"
+  changelog << "- lol" if needs_release
+
+  changelog
+end
 
 def java_function_toml
   <<~EOM
