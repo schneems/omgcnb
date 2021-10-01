@@ -5,6 +5,13 @@ require_relative "../spec_helper"
 
 module Omgcnb
   RSpec.describe "Unreleased markdown" do
+    it "works with empty changelog" do
+        markdown = UnreleasedMarkdown.new(<<~EOM)
+        EOM
+
+        expect(markdown.needs_release?).to be_falsey
+    end
+
     it "knows when there's an entry in unreleased" do
         markdown = UnreleasedMarkdown.new(<<~EOM)
             # Pretend changelog

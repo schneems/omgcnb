@@ -32,7 +32,7 @@ module Omgcnb
       # Find h2 header with "unreleased"
       # search to see if the next element is an "h2" (no unreleased changes)
       # or it is "ul" (has unreleased changes)
-      node = unreleased_h2.next_sibling
+      node = unreleased_h2&.next_sibling
       while node
         node = node.next_sibling
         case node.name

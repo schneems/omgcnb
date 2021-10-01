@@ -9,33 +9,6 @@ require_relative "omgcnb/version"
 module Omgcnb
   class Error < StandardError; end
 
-  class BitOfBuildpack
-    attr_reader :name
-    def initialize(name: , dir:)
-      @name = name
-      @dir = dir
-      @changelog = dir.join("CHANGELOG.md")
-      @toml_file = dir.join("buildpack.toml")
-      @unreleased_markdown = UnreleasedMarkdown.new(@changelog.read)
-    end
-
-    def needs_release?
-      @unreleased_markdown.needs_release?
-    end
-
-    def toml
-      @toml ||= Tomlrb.parse(@toml_file.read, symbolize_keys: true)
-    end
-
-    def depends_on
-      return @depends_on if defined?(@depends_on)
-      @depends_on = toml&.[](:order)
-          &.map { |group_array| group_array[:group] }
-          &.flatten
-          &.map {|group| group[:id] } || []
-    end
-  end
-
   class ResolveDependencies
     def initialize(buildpacks)
       @order = []
@@ -80,3 +53,4 @@ module Omgcnb
 
 end
 require_relative 'omgcnb/unreleased_markdown'
+require_relative 'omgcnb/bit_of_buildpack'
