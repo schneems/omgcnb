@@ -9,25 +9,62 @@ parser = OptionParser.new do |opts|
   opts.banner = <<~EOM
     Usage: omgcnb [argument] [options]
 
+    Commands:
+      - scan <dir>: Outpusts buildpacks and their dependencies for a given path
+
+    Options:
   EOM
 
-  opts.on("--help", "Help - displays this message") do |v|
-    puts opts
-    exit
+  opts.on("--exclude <dir>", "") do |v|
+    options[:exclude] = v
   end
 
-  # opts.on("--record <dir>", "When enabled, records the steps used to search for a syntax error to the given directory") do |v|
-  #   options[:record_dir] = v
-  # end
+  opts.on("--allow-test", "") do
+    options[:allow_test] = true
+  end
 end
 parser.parse!
 
+
 command = ARGV[0]
+directory = ARGV[1]
 
-case arguments
-when deps
+case command
+when 'scan'
+  directory = Pathname(directory).expand_path
+  exclude = if options[:exclude]
+    [Pathname(options[:exclude]).expand_path]
+  else
+    []
+  end
+  if !options[:allow_test]
+    exclude << directory.join("test")
+    exclude << directory.join("spec")
+  end
 
+  buildpacks =  Omgcnb::BuildpacksFromDir.new(
+    dir: directory,
+    exclude: exclude
+  ).buildpacks
+
+  needs_release = Omgcnb::ResolveDependencies.new(buildpacks).solution
+  puts
+  puts "## Needs Release"
+  puts
+  needs_release.each do |b|
+    Omgcnb::DisplayAllDeps.new(b).call
+  end
+  puts
+  puts "## All Buildpacks"
+  puts
+  buildpacks.each do |b|
+    Omgcnb::DisplayAllDeps.new(b).call
+  end
 when nil
   puts parser.help
+  exit(1)
+else
+  puts "no such command #{command}"
+  puts parser.help
+  exit(1)
 end
-

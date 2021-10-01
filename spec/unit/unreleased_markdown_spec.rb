@@ -12,6 +12,16 @@ module Omgcnb
         expect(markdown.needs_release?).to be_falsey
     end
 
+    it "works with upcase changelog" do
+        markdown = UnreleasedMarkdown.new(<<~EOM)
+        ## Unreleased
+
+        * lol
+        EOM
+
+        expect(markdown.needs_release?).to be_truthy
+    end
+
     it "knows when there's an entry in unreleased" do
         markdown = UnreleasedMarkdown.new(<<~EOM)
             # Pretend changelog

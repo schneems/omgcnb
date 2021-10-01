@@ -14,5 +14,25 @@ module Omgcnb
       expect(buildpack.depends_on).to eq([])
       expect(buildpack.name).to eq("heroku/jvm-function-invoker")
     end
+
+    it "ignores optional deps" do
+      buildpack = BitOfBuildpack.new(
+        changelog_contents: mock_changelog,
+        toml_contents: <<~EOM
+          [buildpack]
+          id = "foo"
+
+          [[order]]
+
+          [[order.group]]
+          id = "heroku/procfile"
+          version = "0.6.2"
+          optional = true
+        EOM
+      )
+
+      expect(buildpack.depends_on(show_optional: false)).to eq([])
+      expect(buildpack.depends_on(show_optional: true)).to eq(["heroku/procfile"])
+    end
   end
 end

@@ -18,12 +18,17 @@ module Omgcnb
       @toml
     end
 
-    def depends_on
-      return @depends_on if defined?(@depends_on)
+    def depends_on(show_optional: false)
       @depends_on = toml&.[](:order)
           &.map { |group_array| group_array[:group] }
           &.flatten
-          &.map {|group| group[:id] } || []
+          &.map {|group|
+            if show_optional || !group[:optional]
+              group[:id]
+            else
+              nil
+            end
+          }&.compact || []
     end
   end
 end
