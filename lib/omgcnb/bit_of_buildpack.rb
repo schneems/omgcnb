@@ -14,6 +14,10 @@ module Omgcnb
       @unreleased_markdown.needs_release?
     end
 
+    def changed_list
+      @unreleased_markdown.changed_list
+    end
+
     def toml
       @toml
     end

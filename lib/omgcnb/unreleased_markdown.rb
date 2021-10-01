@@ -20,7 +20,7 @@ module Omgcnb
 
     def changed_list
       return [] unless unreleased_ul
-      unreleased_ul.xpath("//li").map {|li| "- #{li.content}" }
+      unreleased_ul.xpath("li").map {|li| "- #{li.content}" }
     end
 
     def unreleased_ul

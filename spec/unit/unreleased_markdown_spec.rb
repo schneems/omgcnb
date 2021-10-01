@@ -66,6 +66,10 @@ module Omgcnb
 
             * lol
             * hahaha
+
+            ## next
+
+            * hehehehe
         EOM
 
         expect(markdown.changed_list.join("\n")).to eq("- lol\n- hahaha")

@@ -51,8 +51,11 @@ when 'scan'
   puts
   puts "## Needs Release"
   puts
-  needs_release.each do |b|
-    Omgcnb::DisplayAllDeps.new(b).call
+  needs_release.each_with_index do |buildpack, i|
+    puts "#{i.next}) #{buildpack.name}"
+    buildpack.changed_list.each do |line|
+      puts "  #{line}"
+    end
   end
   puts
   puts "## All Buildpacks"

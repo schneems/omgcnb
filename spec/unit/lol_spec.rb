@@ -4,9 +4,9 @@ require_relative "../spec_helper"
 
 module Omgcnb
 
-  RSpec.describe  BuildpacksFromDir do
+  RSpec.describe "playground" do
     it "" do
-      skip
+      skip("using this to prototype stuff")
       buildpacks =  BuildpacksFromDir.new(
         dir: "/Users/rschneeman/Documents/projects/work/buildpacks/buildpacks-nodejs",
         exclude: ["/Users/rschneeman/Documents/projects/work/buildpacks/buildpacks-nodejs/test"]
