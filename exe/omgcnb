@@ -15,16 +15,15 @@ parser = OptionParser.new do |opts|
     Options:
   EOM
 
-  opts.on("--exclude <dir>", "") do |v|
+  opts.on("--exclude <dir>", "Skipps scanning directory") do |v|
     options[:exclude] = v
   end
 
-  opts.on("--allow-test", "") do
+  opts.on("--allow-test", "By default `<dir>/test` and `<dir>/spec` directories are skipped, use this flag to disable") do
     options[:allow_test] = true
   end
 end
 parser.parse!
-
 
 command = ARGV[0]
 directory = ARGV[1]

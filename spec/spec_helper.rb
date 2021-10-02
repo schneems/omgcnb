@@ -3,6 +3,7 @@
 require 'fileutils'
 require 'tmpdir'
 require "omgcnb"
+require "stringio"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -23,14 +24,14 @@ end
 def node_buildpack_dir
   target_dir = root_dir.join('tmp/nodejs')
   if !target_dir.exist?
-    run!("git clone https://github.com/heroku/buildpacks-nodejs #{target_dir} && cd #{target_dir} && git checkout 1234f3a62fb47e9c025d46f43bedf0d75e461aac")
+    run!("git clone https://github.com/heroku/buildpacks-nodejs #{target_dir} && cd #{target_dir} && git checkout f7ea453fb7ae070373daeb5b873daeb1b5d325fb")
   end
   target_dir
 end
 
 def run!(cmd, allow_fail: false)
-  out = `#{cmd} 2&>1`
-  raise "Command #{cmd} failed: #{out}" if !$?.success? && !allow_fail
+  out = `#{cmd}`
+  raise "Command '#{cmd}' failed: #{out}" if !$?.success? && !allow_fail
   out
 end
 

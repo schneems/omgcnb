@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "kramdown", ">= 1.0"
   spec.add_dependency "tomlrb", ">= 1.0"
   spec.add_dependency "nokogiri", ">= 1.0"
+  spec.add_development_dependency "dead_end", ">= 0"
 
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html
