@@ -16,6 +16,24 @@ RSpec.configure do |config|
   end
 end
 
+def root_dir
+  Pathname(__dir__).join("..")
+end
+
+def node_buildpack_dir
+  target_dir = root_dir.join('tmp/nodejs')
+  if !target_dir.exist?
+    run!("git clone https://github.com/heroku/buildpacks-nodejs #{target_dir} && cd #{target_dir} && git checkout 1234f3a62fb47e9c025d46f43bedf0d75e461aac")
+  end
+  target_dir
+end
+
+def run!(cmd, allow_fail: false)
+  out = `#{cmd} 2&>1`
+  raise "Command #{cmd} failed: #{out}" if !$?.success? && !allow_fail
+  out
+end
+
 def mock_toml(name: )
   <<~EOM
   [buildpack]

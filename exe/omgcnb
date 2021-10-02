@@ -31,38 +31,17 @@ directory = ARGV[1]
 
 case command
 when 'scan'
-  directory = Pathname(directory).expand_path
   exclude = if options[:exclude]
     [Pathname(options[:exclude]).expand_path]
   else
     []
   end
-  if !options[:allow_test]
-    exclude << directory.join("test")
-    exclude << directory.join("spec")
-  end
 
-  buildpacks =  Omgcnb::BuildpacksFromDir.new(
+  Omgcnb::ScanCLI.new(
     dir: directory,
-    exclude: exclude
-  ).buildpacks
-
-  needs_release = Omgcnb::ResolveDependencies.new(buildpacks).solution
-  puts
-  puts "## Needs Release"
-  puts
-  needs_release.each_with_index do |buildpack, i|
-    puts "#{i.next}) #{buildpack.name}"
-    buildpack.changed_list.each do |line|
-      puts "  #{line}"
-    end
-  end
-  puts
-  puts "## All Buildpacks"
-  puts
-  buildpacks.each do |b|
-    Omgcnb::DisplayAllDeps.new(b).call
-  end
+    exclude: exclude,
+    allow_test: options[:allow_test]
+  ).call()
 when nil
   puts parser.help
   exit(1)

@@ -3,7 +3,6 @@
 require_relative "../spec_helper"
 
 module Omgcnb
-
   RSpec.describe "playground" do
     it "" do
       skip("using this to prototype stuff")
